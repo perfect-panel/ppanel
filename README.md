@@ -2,6 +2,9 @@
 
 Perfect Panel release page.
 
+# Sponsor
+[![Deployed on Zeabur](https://zeabur.com/deployed-on-zeabur-dark.svg)](https://zeabur.com?referralCode=PPanelGroup&utm_source=PPanelGroup&utm_campaign=oss)
+
 ## Usage
 
 ### 1. Configuration File Path
