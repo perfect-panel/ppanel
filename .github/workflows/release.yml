@@ -17,6 +17,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get tag from dispatch payload
+        run: |
+          echo "TAG=${{ github.event.client_payload.tag }}" >> $GITHUB_ENV
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         with:
@@ -44,9 +48,11 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ppanel/ppanel:${{ github.ref_name }}
+            ppanel/ppanel:${{ env.TAG }}
             ppanel/ppanel:latest
 
       - name: Image push info
         run: |
-          echo "Pushed images: ppanel/ppanel:${{ github.ref_name }} and ppanel/ppanel:latest"
+          echo "Pushed images:"
+          echo "  ppanel/ppanel:${{ env.TAG }}"
+          echo "  ppanel/ppanel:latest"
