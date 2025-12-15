@@ -34,6 +34,9 @@ jobs:
           chmod +x ./script/server.sh
           ./script/server.sh
 
+      - name: List files after download
+        run: ls -la .
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:

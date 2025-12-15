@@ -29,8 +29,10 @@ COPY "ppanel.yaml" "/app/etc/ppanel.yaml"
 
 # Ensure permissions
 RUN chmod +x "/app/gateway-${PLATFORM}" || true && \
-    chmod +x /app/modules/ppanel-server || true && \
-    ln -sf "/app/gateway-${PLATFORM}" /app/gateway
+    chmod +x /app/modules/ppanel-server || true
+
+# Move gateway binary to standard name
+RUN mv "/app/gateway-${PLATFORM}" /app/gateway
 
 # Expose any port the gateway/server uses (optional, adjust as needed)
 # Expose the port (optional)
