@@ -2,7 +2,7 @@
 # Build with: docker build --build-arg PLATFORM=linux-amd64 -t ppanel:latest .
 # PLATFORM may be: darwin-amd64, darwin-arm64, linux-amd64, linux-arm64
 
-FROM alpine:3.18
+FROM debian:stable-slim
 
 # Build-time argument to choose platform (default linux-amd64)
 ARG TARGETOS
