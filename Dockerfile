@@ -5,8 +5,9 @@
 FROM alpine:3.18
 
 # Build-time argument to choose platform (default linux-amd64)
-ARG PLATFORM=linux-amd64
-ENV PLATFORM=${PLATFORM}
+ARG TARGETOS
+ARG TARGETARCH
+ENV PLATFORM=${TARGETOS}-${TARGETARCH}
 
 # Create app directories
 WORKDIR /app
@@ -23,18 +24,19 @@ COPY --chmod=0755 "bin/gateway-${PLATFORM}" "/app/gateway-${PLATFORM}"
 # Copy server binary
 COPY --chmod=0755 "modules/${PLATFORM}/ppanel-server" "/app/modules/ppanel-server"
 
-# Copy etc folder (if exists)
-COPY "modules/${PLATFORM}/etc" "/app/etc"
+# Mkdir etc if not exists and copy config files
+COPY "ppanel.yaml" "/app/etc/ppanel.yaml"
 
 # Ensure permissions
 RUN chmod +x "/app/gateway-${PLATFORM}" || true && \
-    chmod +x /app/modules/ppanel-server || true
+    chmod +x /app/modules/ppanel-server || true && \
+    ln -sf "/app/gateway-${PLATFORM}" /app/gateway
 
 # Expose any port the gateway/server uses (optional, adjust as needed)
 # Expose the port (optional)
 EXPOSE 8080
 
 # Run the gateway binary for the chosen platform. Note: darwin-* binaries will NOT run in a Linux container.
-ENTRYPOINT ["/bin/sh", "-c", "/app/gateway-${PLATFORM}"]
-CMD []
+ENTRYPOINT ["/app/gateway"]
+CMD ["-f", "etc/ppanel.yaml"]
 
