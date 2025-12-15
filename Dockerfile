@@ -19,7 +19,7 @@ RUN mkdir -p /app/modules /app/etc
 # Note: Docker expands ARG/ENV in COPY at build time for the source path.
 
 # Copy gateway
-COPY --chmod=0755 "bin/gateway-${PLATFORM}" "/app/gateway-${PLATFORM}"
+COPY --chmod=0755 "bin/gateway-${PLATFORM}" "/app/gateway"
 
 # Copy server binary
 COPY --chmod=0755 "modules/${PLATFORM}/ppanel-server" "/app/modules/ppanel-server"
@@ -28,11 +28,8 @@ COPY --chmod=0755 "modules/${PLATFORM}/ppanel-server" "/app/modules/ppanel-serve
 COPY "ppanel.yaml" "/app/etc/ppanel.yaml"
 
 # Ensure permissions
-RUN chmod +x "/app/gateway-${PLATFORM}" || true && \
-    chmod +x /app/modules/ppanel-server || true
-
-# Move gateway binary to standard name
-RUN mv "/app/gateway-${PLATFORM}" /app/gateway
+RUN chmod +x "/app/gateway" || true && \
+    chmod +x "/app/modules/ppanel-server" || true
 
 # Expose any port the gateway/server uses (optional, adjust as needed)
 # Expose the port (optional)
