@@ -9,6 +9,10 @@ ARG TARGETOS
 ARG TARGETARCH
 ENV PLATFORM=${TARGETOS}-${TARGETARCH}
 
+# Combine apk commands into one to reduce layer size
+RUN apk update --no-cache && apk add --no-cache tzdata ca-certificates
+
+
 # Create app directories
 WORKDIR /app
 RUN mkdir -p /app/modules /app/etc
