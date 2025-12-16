@@ -9,9 +9,13 @@ ARG TARGETOS
 ARG TARGETARCH
 ENV PLATFORM=${TARGETOS}-${TARGETARCH}
 
-# Combine apk commands into one to reduce layer size
-RUN apk update --no-cache && apk add --no-cache tzdata ca-certificates
-
+# Install CA certificates & timezone data (Debian way)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        tzdata \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create app directories
 WORKDIR /app
